@@ -48,7 +48,7 @@ func (t *Tasks) TableOfTasks(tasks Tasks) *widget.Table {
 		data = append(data, item)
 	}
 
-	return widget.NewTable(
+	table := widget.NewTable(
 		func() (int, int) {
 			return len(data), len(data[0])
 		},
@@ -59,4 +59,12 @@ func (t *Tasks) TableOfTasks(tasks Tasks) *widget.Table {
 			o.(*widget.Label).SetText(data[i.Row][i.Col])
 		},
 	)
+
+	table.SetColumnWidth(0, 30)
+	table.SetColumnWidth(1, 190)
+	table.SetColumnWidth(2, 60)
+	table.SetColumnWidth(3, 150)
+	table.SetColumnWidth(4, 150)
+
+	return table
 }

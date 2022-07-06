@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"image/color"
 
 	"fyne.io/fyne/v2"
@@ -45,18 +44,7 @@ func main() {
 	tasks := task.Tasks{}
 
 	// Define the add button
-	addButton := widget.NewButton("Add", func() {
-		input := widget.NewEntry()
-		input.SetPlaceHolder("Add a task")
-
-		dialog.ShowCustom("What are you planning on doing?", "Close", container.NewVBox(
-			input,
-			widget.NewButton("Save", func() {
-				tasks.Add(input.Text)
-				fmt.Println(tasks)
-			}),
-		), win)
-	})
+	addButton := tasks.AddButtonWidget(win)
 
 	// Display a vertical box
 	box := container.NewVBox(

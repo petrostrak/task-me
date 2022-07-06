@@ -149,10 +149,10 @@ func (t *Tasks) TableOfTasks(tasks Tasks) *widget.Table {
 
 	for idx, x := range *t {
 		idx++
-		done := "no"
+		done := "No"
 		completed := "Not yet completed"
 		if x.Done {
-			done = "yes"
+			done = "Yes"
 			completed = x.CompletedAt.Format("01 JAN 2006 15:04")
 		}
 

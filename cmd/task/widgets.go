@@ -24,3 +24,17 @@ func (t *Tasks) AddButtonWidget(win fyne.Window, filename string) *widget.Button
 		), win)
 	})
 }
+
+func (t *Tasks) ListOfTasks(tasks Tasks) *widget.List {
+	return widget.NewList(
+		func() int {
+			return len(tasks)
+		},
+		func() fyne.CanvasObject {
+			return widget.NewLabel("tasks")
+		},
+		func(i widget.ListItemID, o fyne.CanvasObject) {
+			o.(*widget.Label).SetText(tasks[i].Task)
+		},
+	)
+}

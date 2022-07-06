@@ -2,6 +2,7 @@ package task
 
 import (
 	"encoding/json"
+	"errors"
 	"os"
 	"time"
 )
@@ -33,4 +34,24 @@ func (t *Tasks) Store(filename string) error {
 	}
 
 	return os.WriteFile(filename, data, 0644)
+}
+
+func (t *Tasks) Load(filename string) error {
+	file, err := os.ReadFile(filename)
+	if err != nil {
+		if errors.Is(err, os.ErrNotExist) {
+			return nil
+		}
+		return err
+	}
+
+	if len(file) == 0 {
+		return errors.New("file is empty")
+	}
+
+	if err = json.Unmarshal(file, t); err != nil {
+		return err
+	}
+
+	return nil
 }

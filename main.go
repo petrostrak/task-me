@@ -2,6 +2,7 @@ package main
 
 import (
 	"image/color"
+	"os"
 
 	"fyne.io/fyne/v2"
 	"fyne.io/fyne/v2/app"
@@ -44,8 +45,14 @@ func main() {
 	text := canvas.NewText("Welcome to taskMe!", color.White)
 	text.Alignment = fyne.TextAlignCenter
 
-	// Initialize tasks
+	// Initialize tasks and load tasks from file
 	tasks := task.Tasks{}
+	if err := tasks.Load(TODO_FILE); err != nil {
+		os.Exit(1)
+	}
+
+	// Render the list of tasks
+	listCanvas := tasks.ListOfTasks(tasks)
 
 	// Define the add button
 	addButton := tasks.AddButtonWidget(win, TODO_FILE)
@@ -53,6 +60,7 @@ func main() {
 	// Display a vertical box
 	box := container.NewVBox(
 		text,
+		listCanvas,
 		addButton,
 	)
 

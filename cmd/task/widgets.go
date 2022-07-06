@@ -11,6 +11,22 @@ import (
 	"fyne.io/fyne/v2/widget"
 )
 
+func (t *Tasks) FileMenu(taskMe fyne.App) *fyne.Menu {
+	return fyne.NewMenu("File",
+		fyne.NewMenuItem("Quit", func() { taskMe.Quit() }))
+}
+
+func (t *Tasks) HelpMenu(win fyne.Window) *fyne.Menu {
+	return fyne.NewMenu("Help",
+		fyne.NewMenuItem("About", func() {
+			dialog.ShowCustom("About", "Close", container.NewVBox(
+				widget.NewLabel("Welcome to taskMe!, a simple todo Desktop app written in Go with Fyne."),
+				widget.NewLabel("Version: v1.0.0"),
+				widget.NewLabel("Author: Petros Trak"),
+			), win)
+		}))
+}
+
 func (t *Tasks) WelcomeMessage() *canvas.Text {
 	text := canvas.NewText("Welcome to taskMe!", color.White)
 	text.Alignment = fyne.TextAlignCenter
@@ -19,7 +35,7 @@ func (t *Tasks) WelcomeMessage() *canvas.Text {
 	return text
 }
 
-func (t *Tasks) AddButtonWidget(win fyne.Window, filename string) *widget.Button {
+func (t *Tasks) AddButtonWidget(win fyne.Window, filename string, table fyne.CanvasObject) *widget.Button {
 	button := widget.NewButton("Add", func() {
 		input := widget.NewEntry()
 		input.SetPlaceHolder("Add a task")

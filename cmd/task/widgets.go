@@ -1,16 +1,26 @@
 package task
 
 import (
+	"image/color"
 	"strconv"
 
 	"fyne.io/fyne/v2"
+	"fyne.io/fyne/v2/canvas"
 	"fyne.io/fyne/v2/container"
 	"fyne.io/fyne/v2/dialog"
 	"fyne.io/fyne/v2/widget"
 )
 
+func (t *Tasks) WelcomeMessage() *canvas.Text {
+	text := canvas.NewText("Welcome to taskMe!", color.White)
+	text.Alignment = fyne.TextAlignCenter
+	text.Resize(fyne.NewSize(600, 50))
+
+	return text
+}
+
 func (t *Tasks) AddButtonWidget(win fyne.Window, filename string) *widget.Button {
-	return widget.NewButton("Add", func() {
+	button := widget.NewButton("Add", func() {
 		input := widget.NewEntry()
 		input.SetPlaceHolder("Add a task")
 
@@ -22,6 +32,35 @@ func (t *Tasks) AddButtonWidget(win fyne.Window, filename string) *widget.Button
 			}),
 		), win)
 	})
+
+	button.Resize(fyne.NewSize(600, 50))
+
+	return button
+}
+
+type TableOfTasks struct{}
+
+func (t *TableOfTasks) MinSize(objects []fyne.CanvasObject) fyne.Size {
+	w, h := float32(0), float32(0)
+	for _, o := range objects {
+		childSize := o.Size()
+
+		w += 0
+		h += childSize.Height
+	}
+	return fyne.NewSize(w, h)
+}
+
+func (t *TableOfTasks) Layout(objects []fyne.CanvasObject, containerSize fyne.Size) {
+	pos := fyne.NewPos(0, 0)
+
+	for _, o := range objects {
+		size := o.Size()
+		o.Resize(size)
+		o.Move(pos)
+
+		pos = pos.Add(fyne.NewPos(0, size.Height))
+	}
 }
 
 func (t *Tasks) TableOfTasks(tasks Tasks) *widget.Table {
@@ -65,6 +104,8 @@ func (t *Tasks) TableOfTasks(tasks Tasks) *widget.Table {
 	table.SetColumnWidth(2, 60)
 	table.SetColumnWidth(3, 150)
 	table.SetColumnWidth(4, 150)
+
+	table.Resize(fyne.NewSize(600, 400))
 
 	return table
 }

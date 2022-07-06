@@ -1,6 +1,10 @@
 package task
 
-import "time"
+import (
+	"encoding/json"
+	"os"
+	"time"
+)
 
 type Item struct {
 	Task        string
@@ -20,4 +24,13 @@ func (t *Tasks) Add(task string) {
 	}
 
 	*t = append(*t, item)
+}
+
+func (t *Tasks) Store(filename string) error {
+	data, err := json.Marshal(t)
+	if err != nil {
+		return err
+	}
+
+	return os.WriteFile(filename, data, 0644)
 }

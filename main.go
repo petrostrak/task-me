@@ -12,6 +12,10 @@ import (
 	"github.com/petrostrak/todo-desktop-app-in-Go/cmd/task"
 )
 
+const (
+	TODO_FILE = ".tasks.json"
+)
+
 func main() {
 	taskMe := app.New()
 	win := taskMe.NewWindow("taskMe!")
@@ -44,7 +48,7 @@ func main() {
 	tasks := task.Tasks{}
 
 	// Define the add button
-	addButton := tasks.AddButtonWidget(win)
+	addButton := tasks.AddButtonWidget(win, TODO_FILE)
 
 	// Display a vertical box
 	box := container.NewVBox(

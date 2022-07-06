@@ -6,7 +6,7 @@ import (
 	"fyne.io/fyne/v2"
 	"fyne.io/fyne/v2/app"
 	"fyne.io/fyne/v2/container"
-	"github.com/petrostrak/todo-desktop-app-in-Go/cmd/task"
+	"github.com/petrostrak/task-me/cmd/task"
 )
 
 const (

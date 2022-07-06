@@ -1,4 +1,4 @@
-module github.com/petrostrak/todo-desktop-app-in-Go
+module github.com/petrostrak/task-me
 
 go 1.18
 

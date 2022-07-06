@@ -41,6 +41,8 @@ func main() {
 	// Render the list of tasks
 	table := tasks.TableOfTasks(tasks)
 
+	pending := tasks.PendingTasks()
+
 	// Define the add button
 	addButton := tasks.AddButtonWidget(win, TODO_FILE)
 
@@ -55,6 +57,7 @@ func main() {
 		&task.TableOfTasks{},
 		text,
 		table,
+		pending,
 		addButton,
 		complete,
 		delete,

@@ -2,6 +2,7 @@ package task
 
 import (
 	"errors"
+	"fmt"
 	"image/color"
 	"strconv"
 
@@ -30,6 +31,14 @@ func (t *Tasks) HelpMenu(win fyne.Window) *fyne.Menu {
 
 func (t *Tasks) WelcomeMessage() *canvas.Text {
 	text := canvas.NewText("Welcome to taskMe!", color.White)
+	text.Alignment = fyne.TextAlignCenter
+	text.Resize(fyne.NewSize(600, 50))
+
+	return text
+}
+
+func (t *Tasks) PendingTasks() *canvas.Text {
+	text := canvas.NewText(fmt.Sprintf("You have %d pending task(s)", t.CountPending()), color.White)
 	text.Alignment = fyne.TextAlignCenter
 	text.Resize(fyne.NewSize(600, 50))
 
@@ -107,7 +116,7 @@ type TableOfTasks struct{}
 
 func (t *TableOfTasks) MinSize(objects []fyne.CanvasObject) fyne.Size {
 	w, h := float32(0), float32(0)
-	for _, o := range objects[:3] {
+	for _, o := range objects[:4] {
 		childSize := o.Size()
 
 		w += 0
@@ -124,7 +133,7 @@ func (t *TableOfTasks) Layout(objects []fyne.CanvasObject, containerSize fyne.Si
 		o.Resize(size)
 		o.Move(pos)
 
-		if i < 2 {
+		if i < 3 {
 			pos = pos.Add(fyne.NewPos(0, size.Height))
 		} else {
 			pos = pos.Add(fyne.NewPos(size.Width, 0))

@@ -80,3 +80,15 @@ func (t *Tasks) Delete(index int) error {
 
 	return nil
 }
+
+func (t *Tasks) CountPending() int {
+	total := 0
+
+	for _, item := range *t {
+		if !item.Done {
+			total++
+		}
+	}
+
+	return total
+}

@@ -37,7 +37,7 @@ func (t *Tasks) WelcomeMessage() *canvas.Text {
 }
 
 func (t *Tasks) AddButtonWidget(win fyne.Window, filename string) *widget.Button {
-	button := widget.NewButton("Add", func() {
+	button := widget.NewButton("Add a Task", func() {
 		input := widget.NewEntry()
 		input.SetPlaceHolder("Add a task")
 
@@ -56,7 +56,7 @@ func (t *Tasks) AddButtonWidget(win fyne.Window, filename string) *widget.Button
 }
 
 func (t *Tasks) CompleteTask(win fyne.Window, filename string) *widget.Button {
-	button := widget.NewButton("Complete Task", func() {
+	button := widget.NewButton("Complete a Task", func() {
 		input := widget.NewEntry()
 		input.SetPlaceHolder("# of task to mark as complete")
 
@@ -69,6 +69,30 @@ func (t *Tasks) CompleteTask(win fyne.Window, filename string) *widget.Button {
 				}
 
 				t.Complete(i)
+				t.Store(filename)
+			}),
+		), win)
+	})
+
+	button.Resize(fyne.NewSize(592, 50))
+
+	return button
+}
+
+func (t *Tasks) DeleteTask(win fyne.Window, filename string) *widget.Button {
+	button := widget.NewButton("Delete a Task", func() {
+		input := widget.NewEntry()
+		input.SetPlaceHolder("# of task to delete")
+
+		dialog.ShowCustom("Choose a task to delete!", "Close", container.NewVBox(
+			input,
+			widget.NewButton("Delete", func() {
+				i, err := strconv.Atoi(input.Text)
+				if err != nil {
+					input.SetValidationError(errors.New("please give a number of task to delete"))
+				}
+
+				t.Delete(i)
 				t.Store(filename)
 			}),
 		), win)

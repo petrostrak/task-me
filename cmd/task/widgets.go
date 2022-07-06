@@ -50,7 +50,7 @@ func (t *Tasks) AddButtonWidget(win fyne.Window, filename string) *widget.Button
 		), win)
 	})
 
-	button.Resize(fyne.NewSize(592, 50))
+	button.Resize(fyne.NewSize(196, 50))
 
 	return button
 }
@@ -74,7 +74,7 @@ func (t *Tasks) CompleteTask(win fyne.Window, filename string) *widget.Button {
 		), win)
 	})
 
-	button.Resize(fyne.NewSize(592, 50))
+	button.Resize(fyne.NewSize(196, 50))
 
 	return button
 }
@@ -98,7 +98,7 @@ func (t *Tasks) DeleteTask(win fyne.Window, filename string) *widget.Button {
 		), win)
 	})
 
-	button.Resize(fyne.NewSize(592, 50))
+	button.Resize(fyne.NewSize(196, 50))
 
 	return button
 }
@@ -107,7 +107,7 @@ type TableOfTasks struct{}
 
 func (t *TableOfTasks) MinSize(objects []fyne.CanvasObject) fyne.Size {
 	w, h := float32(0), float32(0)
-	for _, o := range objects {
+	for _, o := range objects[:3] {
 		childSize := o.Size()
 
 		w += 0
@@ -119,12 +119,17 @@ func (t *TableOfTasks) MinSize(objects []fyne.CanvasObject) fyne.Size {
 func (t *TableOfTasks) Layout(objects []fyne.CanvasObject, containerSize fyne.Size) {
 	pos := fyne.NewPos(0, 0)
 
-	for _, o := range objects {
+	for i, o := range objects {
 		size := o.Size()
 		o.Resize(size)
 		o.Move(pos)
 
-		pos = pos.Add(fyne.NewPos(0, size.Height))
+		if i < 2 {
+			pos = pos.Add(fyne.NewPos(0, size.Height))
+		} else {
+			pos = pos.Add(fyne.NewPos(size.Width, 0))
+		}
+
 	}
 }
 

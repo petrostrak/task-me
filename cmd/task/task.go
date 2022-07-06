@@ -55,3 +55,16 @@ func (t *Tasks) Load(filename string) error {
 
 	return nil
 }
+
+func (t *Tasks) Complete(index int) error {
+	ls := *t
+
+	if index <= 0 || index > len(ls) {
+		return errors.New("invalid index")
+	}
+
+	ls[index-1].CompletedAt = time.Now()
+	ls[index-1].Done = true
+
+	return nil
+}

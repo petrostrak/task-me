@@ -1,6 +1,7 @@
 package task
 
 import (
+	"errors"
 	"image/color"
 	"strconv"
 
@@ -35,7 +36,7 @@ func (t *Tasks) WelcomeMessage() *canvas.Text {
 	return text
 }
 
-func (t *Tasks) AddButtonWidget(win fyne.Window, filename string, table fyne.CanvasObject) *widget.Button {
+func (t *Tasks) AddButtonWidget(win fyne.Window, filename string) *widget.Button {
 	button := widget.NewButton("Add", func() {
 		input := widget.NewEntry()
 		input.SetPlaceHolder("Add a task")
@@ -49,7 +50,31 @@ func (t *Tasks) AddButtonWidget(win fyne.Window, filename string, table fyne.Can
 		), win)
 	})
 
-	button.Resize(fyne.NewSize(600, 50))
+	button.Resize(fyne.NewSize(592, 50))
+
+	return button
+}
+
+func (t *Tasks) CompleteTask(win fyne.Window, filename string) *widget.Button {
+	button := widget.NewButton("Complete Task", func() {
+		input := widget.NewEntry()
+		input.SetPlaceHolder("# of task to mark as complete")
+
+		dialog.ShowCustom("Choose a task to mark as complete!", "Close", container.NewVBox(
+			input,
+			widget.NewButton("Complete", func() {
+				i, err := strconv.Atoi(input.Text)
+				if err != nil {
+					input.SetValidationError(errors.New("please give a number of task to mark as complete"))
+				}
+
+				t.Complete(i)
+				t.Store(filename)
+			}),
+		), win)
+	})
+
+	button.Resize(fyne.NewSize(592, 50))
 
 	return button
 }

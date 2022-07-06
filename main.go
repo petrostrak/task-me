@@ -42,7 +42,10 @@ func main() {
 	table := tasks.TableOfTasks(tasks)
 
 	// Define the add button
-	addButton := tasks.AddButtonWidget(win, TODO_FILE, table)
+	addButton := tasks.AddButtonWidget(win, TODO_FILE)
+
+	// Complete or remove button
+	complete := tasks.CompleteTask(win, TODO_FILE)
 
 	// Display a vertical box
 	box := container.New(
@@ -50,6 +53,7 @@ func main() {
 		text,
 		table,
 		addButton,
+		complete,
 	)
 
 	// Display content

@@ -52,7 +52,7 @@ func main() {
 	}
 
 	// Render the list of tasks
-	listCanvas := tasks.ListOfTasks(tasks)
+	listCanvas := tasks.TableOfTasks(tasks)
 
 	// Define the add button
 	addButton := tasks.AddButtonWidget(win, TODO_FILE)

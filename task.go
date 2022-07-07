@@ -28,7 +28,7 @@ func (t *Tasks) Add(task string) {
 }
 
 func (t *Tasks) Store(filename string) error {
-	data, err := json.Marshal(t)
+	data, err := json.MarshalIndent(t, "", "\t")
 	if err != nil {
 		return err
 	}

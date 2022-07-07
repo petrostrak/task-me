@@ -2,13 +2,11 @@ package main
 
 import (
 	"fmt"
-	"image/color"
 	"os"
 	"time"
 
 	"fyne.io/fyne/v2"
 	"fyne.io/fyne/v2/app"
-	"fyne.io/fyne/v2/canvas"
 	"fyne.io/fyne/v2/container"
 	"fyne.io/fyne/v2/widget"
 )
@@ -52,7 +50,7 @@ func main() {
 	e_task := widget.NewEntry()
 	e_task.SetPlaceHolder("Add a new task here")
 
-	pending := canvas.NewText(fmt.Sprintf("You have %d pending task(s)", tasks.CountPending()), color.White)
+	pending := widget.NewLabel(fmt.Sprintf("You have %d pending task(s)", tasks.CountPending()))
 	pending.Alignment = fyne.TextAlignCenter
 
 	// Define the add button

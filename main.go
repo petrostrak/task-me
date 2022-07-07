@@ -11,7 +11,6 @@ import (
 	"fyne.io/fyne/v2/canvas"
 	"fyne.io/fyne/v2/container"
 	"fyne.io/fyne/v2/widget"
-	"github.com/petrostrak/task-me/cmd/task"
 )
 
 const (
@@ -23,7 +22,7 @@ func main() {
 	win := taskMe.NewWindow("taskMe!")
 
 	// Initialize tasks and load tasks from file
-	tasks := task.Tasks{}
+	tasks := Tasks{}
 	if err := tasks.Load(TASKS_FILE); err != nil {
 		os.Exit(1)
 	}
@@ -69,7 +68,7 @@ func main() {
 
 	// Delete  button
 	delete := widget.NewButton("Delete a Task", func() {
-		var TempData []task.Item
+		var TempData []Item
 
 		for _, i := range tasks {
 			if l_task.Text != i.Task {
@@ -114,12 +113,12 @@ func main() {
 
 	// Complete  button
 	complete := widget.NewButton("Complete a Task", func() {
-		var TempData []task.Item
+		var TempData []Item
 
 		for _, i := range tasks {
 			if l_task.Text == i.Task {
 
-				item := task.Item{
+				item := Item{
 					Task:        i.Task,
 					Done:        true,
 					CreatedAt:   i.CreatedAt,

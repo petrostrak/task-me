@@ -1,11 +1,14 @@
 package main
 
 import (
+	"fmt"
+	"image/color"
 	"os"
 	"time"
 
 	"fyne.io/fyne/v2"
 	"fyne.io/fyne/v2/app"
+	"fyne.io/fyne/v2/canvas"
 	"fyne.io/fyne/v2/container"
 	"fyne.io/fyne/v2/widget"
 	"github.com/petrostrak/task-me/cmd/task"
@@ -40,15 +43,18 @@ func main() {
 	// Define a welcome text centered
 	text := tasks.WelcomeMessage()
 
-	l_task := widget.NewLabel("...")
+	l_task := widget.NewLabel("Task")
 	l_task.TextStyle = fyne.TextStyle{Bold: true}
 
-	l_completed := widget.NewLabel("...")
-	l_createdAt := widget.NewLabel("...")
-	l_completedAt := widget.NewLabel("...")
+	l_completed := widget.NewLabel("Done?")
+	l_createdAt := widget.NewLabel("Created at")
+	l_completedAt := widget.NewLabel("Completed at")
 
 	e_task := widget.NewEntry()
-	e_task.SetPlaceHolder("Enter task here")
+	e_task.SetPlaceHolder("Add a new task here")
+
+	pending := canvas.NewText(fmt.Sprintf("You have %d pending task(s)", tasks.CountPending()), color.White)
+	pending.Alignment = fyne.TextAlignCenter
 
 	// Define the add button
 	addButton := widget.NewButton("Add a Task", func() {
@@ -57,6 +63,8 @@ func main() {
 
 		e_task.Text = ""
 		e_task.Refresh()
+
+		pending.Refresh()
 	})
 
 	// Delete  button
@@ -71,6 +79,8 @@ func main() {
 
 		tasks = TempData
 		tasks.Store(TASKS_FILE)
+
+		pending.Refresh()
 	})
 
 	// Render the list of tasks
@@ -129,9 +139,8 @@ func main() {
 		e_task.Refresh()
 
 		list.Refresh()
+		pending.Refresh()
 	})
-
-	pending := tasks.PendingTasks()
 
 	// Display content
 	win.SetContent(container.NewHSplit(

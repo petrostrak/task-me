@@ -110,7 +110,7 @@ func main() {
 			if l_task.Text == i.Task {
 
 				item := task.Item{
-					Task:        e_task.Text,
+					Task:        i.Task,
 					Done:        true,
 					CreatedAt:   i.CreatedAt,
 					CompletedAt: time.Now(),

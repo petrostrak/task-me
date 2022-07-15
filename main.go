@@ -15,9 +15,11 @@ const (
 	TASKS_FILE = ".tasks.json"
 )
 
+var cfg config
+
 func main() {
-	taskMe := app.New()
-	win := taskMe.NewWindow("taskMe!")
+	a := app.New()
+	win := a.NewWindow("taskMe!")
 
 	// Initialize tasks and load tasks from file
 	tasks := Tasks{}
@@ -26,15 +28,8 @@ func main() {
 	}
 
 	// main menu
-	fileMenu := tasks.FileMenu(taskMe)
+	cfg.createMenuItems(win)
 
-	helpMenu := tasks.HelpMenu(win)
-
-	mainMenu := fyne.NewMainMenu(
-		fileMenu,
-		helpMenu,
-	)
-	win.SetMainMenu(mainMenu)
 	win.Resize(fyne.NewSize(600, 400))
 
 	// Define a welcome text centered

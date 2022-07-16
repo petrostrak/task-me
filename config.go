@@ -1,15 +1,15 @@
 package main
 
 import (
-	"fmt"
-
 	"fyne.io/fyne/v2"
+	"fyne.io/fyne/v2/data/binding"
 	"fyne.io/fyne/v2/widget"
 )
 
 type config struct {
 	Tasks     []Item
-	Pendings  int
+	Counter   int
+	Pendings  binding.String
 	TaskEntry *widget.Entry
 	TaskLabels
 }
@@ -38,7 +38,7 @@ func (c *config) makeUI() (add, complete, delete *widget.Button, pending *widget
 
 	delete = widget.NewButton("Delete a Task", c.deleteButton())
 
-	pending = widget.NewLabel(fmt.Sprintf("You have %d pending task(s)", c.Pendings))
+	pending = widget.NewLabelWithData(c.Pendings)
 	pending.Alignment = fyne.TextAlignCenter
 
 	list = widget.NewList(

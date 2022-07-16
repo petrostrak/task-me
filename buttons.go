@@ -1,6 +1,9 @@
 package main
 
-import "time"
+import (
+	"fmt"
+	"time"
+)
 
 func (c *config) addButton() func() {
 	return func() {
@@ -9,6 +12,7 @@ func (c *config) addButton() func() {
 
 		c.TaskEntry.Text = ""
 		c.TaskEntry.Refresh()
+		c.refreshPendings()
 	}
 }
 
@@ -37,6 +41,7 @@ func (c *config) completeButton() func() {
 
 		c.TaskEntry.Text = ""
 		c.TaskEntry.Refresh()
+		c.refreshPendings()
 	}
 }
 
@@ -52,5 +57,11 @@ func (c *config) deleteButton() func() {
 
 		c.Tasks = TempData
 		c.Store(TASKS_FILE)
+		c.refreshPendings()
 	}
+}
+
+func (c *config) refreshPendings() {
+	c.Counter = c.CountPending()
+	c.Pendings.Set(fmt.Sprintf("You have %d pending task(s)", c.Counter))
 }

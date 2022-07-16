@@ -6,6 +6,7 @@ import (
 	"fyne.io/fyne/v2"
 	"fyne.io/fyne/v2/app"
 	"fyne.io/fyne/v2/container"
+	"fyne.io/fyne/v2/data/binding"
 	"fyne.io/fyne/v2/dialog"
 	"fyne.io/fyne/v2/widget"
 )
@@ -20,7 +21,8 @@ func main() {
 
 	c := config{
 		Tasks:     make([]Item, 0),
-		Pendings:  0,
+		Counter:   0,
+		Pendings:  binding.NewString(),
 		TaskEntry: widget.NewEntry(),
 		TaskLabels: TaskLabels{
 			TaskLabel:        widget.NewLabel("Task"),
@@ -36,7 +38,7 @@ func main() {
 		dialog.ShowError(err, win)
 		os.Exit(1)
 	}
-	c.Pendings = c.CountPending()
+	c.refreshPendings()
 
 	// Define a welcome text centered
 	text := c.WelcomeMessage()

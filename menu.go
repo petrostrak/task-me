@@ -11,7 +11,7 @@ func (c *config) About(win fyne.Window) func() {
 	return func() {
 		dialog.ShowCustom("About", "Close", container.NewVBox(
 			widget.NewLabel("Welcome to taskMe!, a simple todo Desktop app written in Go with Fyne."),
-			widget.NewLabel("Version: v3.0.0"),
+			widget.NewLabel("Version: v2.0.1"),
 			widget.NewLabel("Author: Petros Trak"),
 		), win)
 	}

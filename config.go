@@ -2,11 +2,11 @@ package main
 
 import (
 	"fyne.io/fyne/v2"
-	"fyne.io/fyne/v2/widget"
 )
 
 type config struct {
-	TaskList *widget.List
+	Tasks    []Item
+	Pendings int
 }
 
 func (c *config) createMenuItems(win fyne.Window) {

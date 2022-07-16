@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"log"
 	"os"
 	"time"
 
@@ -15,25 +16,26 @@ const (
 	TASKS_FILE = ".tasks.json"
 )
 
-var cfg config
-
 func main() {
 	a := app.New()
 	win := a.NewWindow("taskMe!")
 
-	// Initialize tasks and load tasks from file
-	tasks := Tasks{}
-	if err := tasks.Load(TASKS_FILE); err != nil {
+	cfg := config{
+		Tasks: make([]Item, 0),
+	}
+
+	if err := cfg.Load(TASKS_FILE); err != nil {
 		os.Exit(1)
 	}
+
+	cfg.Pendings = cfg.CountPending()
+	log.Println(cfg.Pendings)
 
 	// main menu
 	cfg.createMenuItems(win)
 
-	win.Resize(fyne.NewSize(600, 400))
-
 	// Define a welcome text centered
-	text := tasks.WelcomeMessage()
+	text := cfg.WelcomeMessage()
 
 	l_task := widget.NewLabel("Task")
 	l_task.TextStyle = fyne.TextStyle{Bold: true}
@@ -45,54 +47,51 @@ func main() {
 	e_task := widget.NewEntry()
 	e_task.SetPlaceHolder("Add a new task here")
 
-	pending := widget.NewLabel(fmt.Sprintf("You have %d pending task(s)", tasks.CountPending()))
+	pending := widget.NewLabel(fmt.Sprintf("You have %d pending task(s)", cfg.Pendings))
 	pending.Alignment = fyne.TextAlignCenter
 
 	// Define the add button
 	addButton := widget.NewButton("Add a Task", func() {
-		tasks.Add(e_task.Text)
-		tasks.Store(TASKS_FILE)
+		cfg.Add(e_task.Text)
+		cfg.Store(TASKS_FILE)
 
 		e_task.Text = ""
 		e_task.Refresh()
-
-		pending.Refresh()
+		cfg.Pendings++
 	})
 
 	// Delete  button
 	delete := widget.NewButton("Delete a Task", func() {
 		var TempData []Item
 
-		for _, i := range tasks {
+		for _, i := range cfg.Tasks {
 			if l_task.Text != i.Task {
 				TempData = append(TempData, i)
 			}
 		}
 
-		tasks = TempData
-		tasks.Store(TASKS_FILE)
-
-		pending.Refresh()
+		cfg.Tasks = TempData
+		cfg.Store(TASKS_FILE)
 	})
 
 	// Render the list of tasks
 	list := widget.NewList(
-		func() int { return len(tasks) },
+		func() int { return len(cfg.Tasks) },
 
 		func() fyne.CanvasObject { return widget.NewLabel("") },
 
 		func(i widget.ListItemID, o fyne.CanvasObject) {
-			o.(*widget.Label).SetText(tasks[i].Task)
+			o.(*widget.Label).SetText(cfg.Tasks[i].Task)
 		},
 	)
 
 	list.OnSelected = func(id widget.ListItemID) {
-		l_task.Text = tasks[id].Task
+		l_task.Text = cfg.Tasks[id].Task
 		l_task.Refresh()
-		if tasks[id].Done {
+		if cfg.Tasks[id].Done {
 			l_completed.Text = "Done!"
 			l_completed.Refresh()
-			l_completedAt.Text = tasks[id].CompletedAt.Format("01 JAN 2006 15:04")
+			l_completedAt.Text = cfg.Tasks[id].CompletedAt.Format("01 JAN 2006 15:04")
 			l_completedAt.Refresh()
 		} else {
 			l_completed.Text = "Not done yet"
@@ -100,7 +99,7 @@ func main() {
 			l_completedAt.Text = "Pending..."
 			l_completedAt.Refresh()
 		}
-		l_createdAt.Text = tasks[id].CreatedAt.Format("01 JAN 2006 15:04")
+		l_createdAt.Text = cfg.Tasks[id].CreatedAt.Format("01 JAN 2006 15:04")
 		l_createdAt.Refresh()
 	}
 
@@ -108,7 +107,7 @@ func main() {
 	complete := widget.NewButton("Complete a Task", func() {
 		var TempData []Item
 
-		for _, i := range tasks {
+		for _, i := range cfg.Tasks {
 			if l_task.Text == i.Task {
 
 				item := Item{
@@ -124,14 +123,11 @@ func main() {
 			}
 		}
 
-		tasks = TempData
-		tasks.Store(TASKS_FILE)
+		cfg.Tasks = TempData
+		cfg.Store(TASKS_FILE)
 
 		e_task.Text = ""
 		e_task.Refresh()
-
-		list.Refresh()
-		pending.Refresh()
 	})
 
 	// Display content
@@ -143,5 +139,8 @@ func main() {
 			pending,
 		),
 	))
+
+	win.Resize(fyne.NewSize(600, 400))
+	win.CenterOnScreen()
 	win.ShowAndRun()
 }

@@ -8,7 +8,7 @@ import (
 	"fyne.io/fyne/v2/canvas"
 )
 
-func (t *Tasks) WelcomeMessage() *canvas.Text {
+func (c *config) WelcomeMessage() *canvas.Text {
 	text := canvas.NewText("Welcome to taskMe!", color.White)
 	text.Alignment = fyne.TextAlignCenter
 	text.Resize(fyne.NewSize(600, 50))
@@ -16,8 +16,8 @@ func (t *Tasks) WelcomeMessage() *canvas.Text {
 	return text
 }
 
-func (t *Tasks) PendingTasks() *canvas.Text {
-	text := canvas.NewText(fmt.Sprintf("You have %d pending task(s)", t.CountPending()), color.White)
+func (c *config) PendingTasks() *canvas.Text {
+	text := canvas.NewText(fmt.Sprintf("You have %d pending task(s)", c.CountPending()), color.White)
 	text.Alignment = fyne.TextAlignCenter
 	text.Resize(fyne.NewSize(600, 50))
 

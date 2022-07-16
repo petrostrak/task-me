@@ -14,9 +14,7 @@ type Item struct {
 	CompletedAt time.Time
 }
 
-type Tasks []Item
-
-func (t *Tasks) Add(task string) {
+func (c *config) Add(task string) {
 	item := Item{
 		Task:        task,
 		Done:        false,
@@ -24,11 +22,11 @@ func (t *Tasks) Add(task string) {
 		CompletedAt: time.Time{},
 	}
 
-	*t = append(*t, item)
+	c.Tasks = append(c.Tasks, item)
 }
 
-func (t *Tasks) Store(filename string) error {
-	data, err := json.MarshalIndent(t, "", "\t")
+func (c *config) Store(filename string) error {
+	data, err := json.MarshalIndent(c.Tasks, "", "\t")
 	if err != nil {
 		return err
 	}
@@ -36,7 +34,7 @@ func (t *Tasks) Store(filename string) error {
 	return os.WriteFile(filename, data, 0644)
 }
 
-func (t *Tasks) Load(filename string) error {
+func (c *config) Load(filename string) error {
 	file, err := os.ReadFile(filename)
 	if err != nil {
 		if errors.Is(err, os.ErrNotExist) {
@@ -49,17 +47,17 @@ func (t *Tasks) Load(filename string) error {
 		return errors.New("file is empty")
 	}
 
-	if err = json.Unmarshal(file, t); err != nil {
+	if err = json.Unmarshal(file, &c.Tasks); err != nil {
 		return err
 	}
 
 	return nil
 }
 
-func (t *Tasks) CountPending() int {
+func (c *config) CountPending() int {
 	total := 0
 
-	for _, item := range *t {
+	for _, item := range c.Tasks {
 		if !item.Done {
 			total++
 		}

@@ -1,8 +1,0 @@
-[Desktop Entry]
-Type=Application
-Name=taskMe!
-GenericName=A todo application
-Icon=/usr/local/share/applications/taskme.png
-TryExec=task-me
-Exec=task-me %U
-Terminal=false

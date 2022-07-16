@@ -12,8 +12,8 @@ taskMe! is a simple simple todo Desktop app written in Go with [Fyne](https://de
 
 * Extract taskMe.tar.xz
     
-    `mdkir taskMe && tar -xvf taskMe.tar.xz -C taskMe`
+    `mkdir taskME && tar -xvf taskME.tar.xz -C taskME`
 
 * Mount and run make file:
 
-    `cd taskMe && sudo make install`
+    `cd taskME && sudo make install`

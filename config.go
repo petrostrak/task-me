@@ -1,6 +1,8 @@
 package main
 
 import (
+	"fmt"
+
 	"fyne.io/fyne/v2"
 	"fyne.io/fyne/v2/widget"
 )
@@ -29,12 +31,15 @@ func (c *config) createMenuItems(win fyne.Window) {
 	win.SetMainMenu(menu)
 }
 
-func (c *config) makeUI() (add, complete, delete *widget.Button, list *widget.List) {
+func (c *config) makeUI() (add, complete, delete *widget.Button, pending *widget.Label, list *widget.List) {
 	add = widget.NewButton("Add a Task", c.addButton())
 
 	complete = widget.NewButton("Complete a Task", c.completeButton())
 
 	delete = widget.NewButton("Delete a Task", c.deleteButton())
+
+	pending = widget.NewLabel(fmt.Sprintf("You have %d pending task(s)", c.Pendings))
+	pending.Alignment = fyne.TextAlignCenter
 
 	list = widget.NewList(
 		func() int { return len(c.Tasks) },

@@ -1,13 +1,12 @@
 package main
 
 import (
-	"fmt"
 	"os"
 
 	"fyne.io/fyne/v2"
 	"fyne.io/fyne/v2/app"
 	"fyne.io/fyne/v2/container"
-	"fyne.io/fyne/v2/data/binding"
+	"fyne.io/fyne/v2/dialog"
 	"fyne.io/fyne/v2/widget"
 )
 
@@ -19,8 +18,9 @@ func main() {
 	a := app.New()
 	win := a.NewWindow("taskMe!")
 
-	cfg := config{
+	c := config{
 		Tasks:     make([]Item, 0),
+		Pendings:  0,
 		TaskEntry: widget.NewEntry(),
 		TaskLabels: TaskLabels{
 			TaskLabel:        widget.NewLabel("Task"),
@@ -29,37 +29,30 @@ func main() {
 			CompletedAtLabel: widget.NewLabel("Completed at"),
 		},
 	}
-	cfg.TaskLabels.TaskLabel.TextStyle = fyne.TextStyle{Bold: true}
-	cfg.TaskEntry.SetPlaceHolder("Add a new task here")
+	c.TaskLabels.TaskLabel.TextStyle = fyne.TextStyle{Bold: true}
+	c.TaskEntry.SetPlaceHolder("Add a new task here")
 
-	if err := cfg.Load(TASKS_FILE); err != nil {
+	if err := c.Load(TASKS_FILE); err != nil {
+		dialog.ShowError(err, win)
 		os.Exit(1)
 	}
-
-	cfg.Pendings = cfg.CountPending()
+	c.Pendings = c.CountPending()
 
 	// Define a welcome text centered
-	text := cfg.WelcomeMessage()
-
-	data := binding.NewString()
-	s := fmt.Sprintf("You have %d pending task(s)", cfg.Pendings)
-	data.Set(s)
-
-	pending := widget.NewLabelWithData(data)
-	pending.Alignment = fyne.TextAlignCenter
+	text := c.WelcomeMessage()
 
 	// Define the add button
-	add, complete, delete, list := cfg.makeUI()
+	add, complete, delete, pending, list := c.makeUI()
 
 	// main menu
-	cfg.createMenuItems(win)
+	c.createMenuItems(win)
 
 	// Display content
 	win.SetContent(container.NewHSplit(
 		list,
 		container.NewVBox(
-			text, cfg.TaskLabel, cfg.CompletedLabel, cfg.CreatedAtLabel, cfg.CompletedAtLabel,
-			cfg.TaskEntry, add, complete, delete,
+			text, c.TaskLabel, c.CompletedLabel, c.CreatedAtLabel, c.CompletedAtLabel,
+			c.TaskEntry, add, complete, delete,
 			pending,
 		),
 	))

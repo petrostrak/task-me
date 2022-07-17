@@ -10,16 +10,16 @@ import (
 type Item struct {
 	Task        string
 	Done        bool
-	CreatedAt   time.Time
-	CompletedAt time.Time
+	CreatedAt   string
+	CompletedAt string
 }
 
 func (c *config) Add(task string) {
 	item := Item{
 		Task:        task,
 		Done:        false,
-		CreatedAt:   time.Now(),
-		CompletedAt: time.Time{},
+		CreatedAt:   time.Now().Format("Mon 2 Jan 2006 15:04"),
+		CompletedAt: time.Time{}.Format("Mon 2 Jan 2006 15:04"),
 	}
 
 	c.Tasks = append(c.Tasks, item)

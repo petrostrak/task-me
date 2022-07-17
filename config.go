@@ -62,7 +62,7 @@ func (c *config) onSelect(id widget.ListItemID) {
 	if c.Tasks[id].Done {
 		c.CompletedLabel.Text = "Done!"
 		c.CompletedLabel.Refresh()
-		c.CompletedAtLabel.Text = c.Tasks[id].CompletedAt.Format("01 JAN 2006 15:04")
+		c.CompletedAtLabel.Text = c.Tasks[id].CompletedAt
 		c.CompletedAtLabel.Refresh()
 	} else {
 		c.CompletedLabel.Text = "Not done yet"
@@ -70,6 +70,6 @@ func (c *config) onSelect(id widget.ListItemID) {
 		c.CompletedAtLabel.Text = "Pending..."
 		c.CompletedAtLabel.Refresh()
 	}
-	c.CreatedAtLabel.Text = c.Tasks[id].CreatedAt.Format("01 JAN 2006 15:04")
+	c.CreatedAtLabel.Text = c.Tasks[id].CreatedAt
 	c.CreatedAtLabel.Refresh()
 }

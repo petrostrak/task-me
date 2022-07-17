@@ -27,7 +27,7 @@ func (c *config) completeButton() func() {
 					Task:        i.Task,
 					Done:        true,
 					CreatedAt:   i.CreatedAt,
-					CompletedAt: time.Now(),
+					CompletedAt: time.Now().Format("Mon 2 Jan 2006 15:04"),
 				}
 
 				TempData = append(TempData, item)

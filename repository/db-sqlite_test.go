@@ -73,3 +73,15 @@ func TestSQLiteRepository_UpdateTask(t *testing.T) {
 		t.Error("update failed:", err)
 	}
 }
+
+func TestSQLiteRepository_DeleteTask(t *testing.T) {
+	err := testRepo.DeleteTask(1)
+	if err != nil {
+		t.Error("failed to delete task:", err)
+	}
+
+	err = testRepo.DeleteTask(2)
+	if err == nil {
+		t.Error("no error when trying to delete non-existent record!")
+	}
+}

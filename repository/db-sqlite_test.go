@@ -47,3 +47,14 @@ func TestSQLiteRepository_GetTaskByID(t *testing.T) {
 		t.Error("get values from non-existent id")
 	}
 }
+
+func TestSQLiteRepository_AllTasks(t *testing.T) {
+	tsks, err := testRepo.AllTasks()
+	if err != nil {
+		t.Error("get all tasks failed:", err)
+	}
+
+	if len(tsks) != 1 {
+		t.Errorf("wrong number of rows returned; expected 1, but got %d", len(tsks))
+	}
+}

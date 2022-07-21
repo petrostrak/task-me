@@ -72,6 +72,7 @@ func (repo *SQLiteRepository) AllTasks() ([]Task, error) {
 			&t.ID,
 			&t.Title,
 			&t.Description,
+			&t.Done,
 			&unixTime,
 			&unixTime,
 		)

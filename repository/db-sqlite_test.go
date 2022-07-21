@@ -58,3 +58,18 @@ func TestSQLiteRepository_AllTasks(t *testing.T) {
 		t.Errorf("wrong number of rows returned; expected 1, but got %d", len(tsks))
 	}
 }
+
+func TestSQLiteRepository_UpdateTask(t *testing.T) {
+	tsk, err := testRepo.GetTaskByID(1)
+	if err != nil {
+		t.Error(err)
+	}
+
+	tsk.Description = "need more testing"
+	tsk.Done = false
+
+	err = testRepo.UpdateTask(1, *tsk)
+	if err != nil {
+		t.Error("update failed:", err)
+	}
+}

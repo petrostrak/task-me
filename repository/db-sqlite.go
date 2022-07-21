@@ -139,3 +139,21 @@ func (repo *SQLiteRepository) UpdateTask(id int64, updated Task) error {
 
 	return nil
 }
+
+func (repo *SQLiteRepository) DeleteTask(id int64) error {
+	result, err := repo.Conn.Exec("delete from tasks where id = ?", id)
+	if err != nil {
+		return err
+	}
+
+	rowsAffected, err := result.RowsAffected()
+	if err != nil {
+		return err
+	}
+
+	if rowsAffected == 0 {
+		return errors.New("delete failed")
+	}
+
+	return nil
+}

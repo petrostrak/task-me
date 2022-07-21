@@ -4,6 +4,7 @@ import (
 	"fyne.io/fyne/v2"
 	"fyne.io/fyne/v2/data/binding"
 	"fyne.io/fyne/v2/widget"
+	"github.com/petrostrak/task-me/repository"
 )
 
 type config struct {
@@ -12,6 +13,7 @@ type config struct {
 	Pendings         binding.String
 	TaskEntry        *widget.Entry
 	DescriptionEntry *widget.Entry
+	DB               repository.Repository
 	TaskLabels
 }
 

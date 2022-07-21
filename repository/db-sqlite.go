@@ -85,3 +85,32 @@ func (repo *SQLiteRepository) AllTasks() ([]Task, error) {
 
 	return all, nil
 }
+
+func (repo *SQLiteRepository) GetTaskByID(id int) (*Task, error) {
+	query := `
+	select
+		id, title, description, done, created_at, completed_at
+		where id = ?
+	`
+
+	row := repo.Conn.QueryRow(query, id)
+
+	var t Task
+	var unixTime int64
+
+	err := row.Scan(
+		&t.ID,
+		&t.Title,
+		&t.Description,
+		&unixTime,
+		&unixTime,
+	)
+	if err != nil {
+		return nil, err
+	}
+
+	t.CreatedAt = time.Unix(unixTime, 0)
+	t.CompletedAt = time.Unix(unixTime, 0)
+
+	return &t, nil
+}

@@ -20,12 +20,14 @@ func main() {
 	win := a.NewWindow("taskMe!")
 
 	c := config{
-		Tasks:     make([]Item, 0),
-		Counter:   0,
-		Pendings:  binding.NewString(),
-		TaskEntry: widget.NewEntry(),
+		Tasks:            make([]Item, 0),
+		Counter:          0,
+		Pendings:         binding.NewString(),
+		TaskEntry:        widget.NewEntry(),
+		DescriptionEntry: widget.NewEntry(),
 		TaskLabels: TaskLabels{
 			TaskLabel:        widget.NewLabel("Task"),
+			DescriptionLabel: widget.NewLabel("Description"),
 			CompletedLabel:   widget.NewLabel("Done?"),
 			CreatedAtLabel:   widget.NewLabel("Created at"),
 			CompletedAtLabel: widget.NewLabel("Completed at"),
@@ -33,6 +35,7 @@ func main() {
 	}
 	c.TaskLabels.TaskLabel.TextStyle = fyne.TextStyle{Bold: true}
 	c.TaskEntry.SetPlaceHolder("Add a new task here")
+	c.DescriptionEntry.SetPlaceHolder("Add description here")
 
 	if err := c.Load(TASKS_FILE); err != nil {
 		dialog.ShowError(err, win)
@@ -53,8 +56,9 @@ func main() {
 	win.SetContent(container.NewHSplit(
 		list,
 		container.NewVBox(
-			text, c.TaskLabel, c.CompletedLabel, c.CreatedAtLabel, c.CompletedAtLabel,
-			c.TaskEntry, add, complete, delete,
+			text, c.TaskLabel, c.DescriptionLabel,
+			c.CompletedLabel, c.CreatedAtLabel, c.CompletedAtLabel,
+			c.TaskEntry, c.DescriptionEntry, add, complete, delete,
 			pending,
 		),
 	))

@@ -7,15 +7,17 @@ import (
 )
 
 type config struct {
-	Tasks     []Item
-	Counter   int
-	Pendings  binding.String
-	TaskEntry *widget.Entry
+	Tasks            []Item
+	Counter          int
+	Pendings         binding.String
+	TaskEntry        *widget.Entry
+	DescriptionEntry *widget.Entry
 	TaskLabels
 }
 
 type TaskLabels struct {
 	TaskLabel        *widget.Label
+	DescriptionLabel *widget.Label
 	CompletedLabel   *widget.Label
 	CreatedAtLabel   *widget.Label
 	CompletedAtLabel *widget.Label
@@ -72,4 +74,6 @@ func (c *config) onSelect(id widget.ListItemID) {
 	}
 	c.CreatedAtLabel.Text = c.Tasks[id].CreatedAt
 	c.CreatedAtLabel.Refresh()
+	c.DescriptionLabel.Text = c.Tasks[id].Description
+	c.DescriptionLabel.Refresh()
 }

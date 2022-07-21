@@ -9,14 +9,16 @@ import (
 
 type Item struct {
 	Task        string
+	Description string
 	Done        bool
 	CreatedAt   string
 	CompletedAt string
 }
 
-func (c *config) Add(task string) {
+func (c *config) Add(task, desc string) {
 	item := Item{
 		Task:        task,
+		Description: desc,
 		Done:        false,
 		CreatedAt:   time.Now().Format("Mon 2 Jan 2006 15:04"),
 		CompletedAt: time.Time{}.Format("Mon 2 Jan 2006 15:04"),

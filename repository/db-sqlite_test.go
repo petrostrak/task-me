@@ -31,3 +31,19 @@ func TestSQLiteRepository_InsertTask(t *testing.T) {
 		t.Error("invalid id sent back:", result.ID)
 	}
 }
+
+func TestSQLiteRepository_GetTaskByID(t *testing.T) {
+	tsk, err := testRepo.GetTaskByID(1)
+	if err != nil {
+		t.Error("get by id failed:", err)
+	}
+
+	if tsk.Description != "description" {
+		t.Errorf("wrong task description; expected 'description' but got %s", tsk.Description)
+	}
+
+	_, err = testRepo.GetTaskByID(2)
+	if err == nil {
+		t.Error("get values from non-existent id")
+	}
+}

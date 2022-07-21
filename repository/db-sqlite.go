@@ -90,8 +90,7 @@ func (repo *SQLiteRepository) AllTasks() ([]Task, error) {
 func (repo *SQLiteRepository) GetTaskByID(id int) (*Task, error) {
 	query := `
 	select
-		id, title, description, done, created_at, completed_at
-		where id = ?
+		id, title, description, done, created_at, completed_at from tasks where id = ?
 	`
 
 	row := repo.Conn.QueryRow(query, id)
@@ -103,6 +102,7 @@ func (repo *SQLiteRepository) GetTaskByID(id int) (*Task, error) {
 		&t.ID,
 		&t.Title,
 		&t.Description,
+		&t.Done,
 		&unixTime,
 		&unixTime,
 	)

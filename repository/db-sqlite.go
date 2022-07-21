@@ -25,3 +25,25 @@ func (repo *SQLiteRepository) Migrate() error {
 
 	return err
 }
+
+func (repo *SQLiteRepository) InsertTask(t Task) (*Task, error) {
+	stmt := `
+	insert 
+		into tasks (title, description, done, created_at, completed_at) 
+		values (?, ?, ?, ?, ?)
+	`
+
+	result, err := repo.Conn.Exec(stmt, t.Title, t.Description, t.Done, t.CreatedAt.Unix(), t.CompletedAt.Unix())
+	if err != nil {
+		return nil, err
+	}
+
+	id, err := result.LastInsertId()
+	if err != nil {
+		return nil, err
+	}
+
+	t.ID = id
+
+	return &t, nil
+}

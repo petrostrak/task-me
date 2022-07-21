@@ -1,6 +1,9 @@
 package repository
 
-import "database/sql"
+import (
+	"database/sql"
+	"time"
+)
 
 type SQLiteRepository struct {
 	Conn *sql.DB
@@ -46,4 +49,39 @@ func (repo *SQLiteRepository) InsertTask(t Task) (*Task, error) {
 	t.ID = id
 
 	return &t, nil
+}
+
+func (repo *SQLiteRepository) AllTasks() ([]Task, error) {
+	query := `
+	select
+		id, title, description, done, created_at, completed_at
+		from tasks order by created_at
+	`
+
+	rows, err := repo.Conn.Query(query)
+	if err != nil {
+		return nil, err
+	}
+
+	var all []Task
+	for rows.Next() {
+		var t Task
+		var unixTime int64
+		err := rows.Scan(
+			&t.ID,
+			&t.Title,
+			&t.Description,
+			&unixTime,
+			&unixTime,
+		)
+		if err != nil {
+			return nil, err
+		}
+
+		t.CreatedAt = time.Unix(unixTime, 0)
+		t.CompletedAt = time.Unix(unixTime, 0)
+		all = append(all, t)
+	}
+
+	return all, nil
 }

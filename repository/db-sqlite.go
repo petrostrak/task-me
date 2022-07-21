@@ -2,6 +2,7 @@ package repository
 
 import (
 	"database/sql"
+	"errors"
 	"time"
 )
 
@@ -113,4 +114,28 @@ func (repo *SQLiteRepository) GetTaskByID(id int) (*Task, error) {
 	t.CompletedAt = time.Unix(unixTime, 0)
 
 	return &t, nil
+}
+
+func (repo *SQLiteRepository) UpdateTask(id int64, updated Task) error {
+	if id == 0 {
+		return errors.New("update failed")
+	}
+
+	stmt := "update tasks set title = ?, description = ?, done = ?, completed_at = ? where id  = ?"
+
+	result, err := repo.Conn.Exec(stmt, updated.Title, updated.Description, updated.Done, updated.CompletedAt.Unix(), id)
+	if err != nil {
+		return err
+	}
+
+	rowsAffected, err := result.RowsAffected()
+	if err != nil {
+		return err
+	}
+
+	if rowsAffected == 0 {
+		return errors.New("update failed")
+	}
+
+	return nil
 }

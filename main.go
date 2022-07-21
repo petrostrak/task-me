@@ -1,6 +1,7 @@
 package main
 
 import (
+	"log"
 	"os"
 
 	"fyne.io/fyne/v2"
@@ -16,10 +17,11 @@ const (
 )
 
 func main() {
-	a := app.New()
+	a := app.NewWithID("app.petrostrak.taskMe.preferences")
 	win := a.NewWindow("taskMe!")
 
 	c := config{
+		App:              a,
 		Tasks:            make([]Item, 0),
 		Counter:          0,
 		Pendings:         binding.NewString(),
@@ -36,6 +38,15 @@ func main() {
 	c.TaskLabels.TaskLabel.TextStyle = fyne.TextStyle{Bold: true}
 	c.TaskEntry.SetPlaceHolder("Add a new task here")
 	c.DescriptionEntry.SetPlaceHolder("Add description here")
+
+	// open connection to DB
+	db, err := c.connectSQL()
+	if err != nil {
+		log.Panic(err)
+	}
+
+	// create a DB repository
+	c.setupDB(db)
 
 	if err := c.Load(TASKS_FILE); err != nil {
 		dialog.ShowError(err, win)

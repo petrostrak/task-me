@@ -8,6 +8,7 @@ import (
 )
 
 type config struct {
+	App              fyne.App
 	Tasks            []Item
 	Counter          int
 	Pendings         binding.String

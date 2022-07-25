@@ -10,6 +10,9 @@ import (
 type config struct {
 	App              fyne.App
 	Tasks            []Item
+	TaskTable        [][]any
+	Table            *widget.Table
+	MainWindow       fyne.Window
 	Counter          int
 	Pendings         binding.String
 	TaskEntry        *widget.Entry

@@ -74,7 +74,7 @@ func main() {
 		),
 	))
 
-	win.Resize(fyne.NewSize(600, 400))
+	win.Resize(fyne.NewSize(770, 410))
 	win.CenterOnScreen()
 	win.ShowAndRun()
 }

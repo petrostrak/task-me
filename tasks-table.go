@@ -12,6 +12,20 @@ import (
 	"github.com/petrostrak/task-me/repository"
 )
 
+func (c *config) tasks() *fyne.Container {
+	c.Table = c.getTasksTable()
+
+	tasksContainer := container.NewBorder(
+		nil,
+		nil,
+		nil,
+		nil,
+		container.NewAdaptiveGrid(1, c.getTasksTable()),
+	)
+
+	return tasksContainer
+}
+
 func (c *config) getTasksTable() *widget.Table {
 	data := c.getTaskSlice()
 	c.TaskTable = data
@@ -50,7 +64,7 @@ func (c *config) getTasksTable() *widget.Table {
 		},
 	)
 
-	colwidth := []float32{50, 600, 110}
+	colwidth := []float32{50, 400, 110}
 	for i := 0; i < len(colwidth); i++ {
 		t.SetColumnWidth(i, colwidth[i])
 	}
@@ -66,7 +80,7 @@ func (c *config) getTaskSlice() [][]any {
 		log.Println(err)
 	}
 
-	slice = append(slice, []any{"ID", "Title", "Complete", "Delete"})
+	slice = append(slice, []any{"ID", "Title", "Delete"})
 
 	for _, x := range tasks {
 		var currentRow []any

@@ -58,14 +58,16 @@ func main() {
 	text := c.WelcomeMessage()
 
 	// Define the add button
-	add, complete, delete, pending, list := c.makeUI()
+	add, complete, delete, pending, _ := c.makeUI()
+
+	table := c.tasks()
 
 	// main menu
 	c.createMenuItems(win)
 
 	// Display content
 	win.SetContent(container.NewHSplit(
-		list,
+		table,
 		container.NewVBox(
 			text, c.TaskLabel, c.DescriptionLabel,
 			c.CompletedLabel, c.CreatedAtLabel, c.CompletedAtLabel,

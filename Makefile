@@ -10,7 +10,7 @@ build:
 
 ## run: builds and runs the application
 run:
-	go run .
+	env DB_PATH="./sql.db" go run .
 
 ## clean: runs go clean and deletes binaries
 clean:

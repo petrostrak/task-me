@@ -13,6 +13,7 @@ import (
 )
 
 func (c *config) tasks() *fyne.Container {
+	c.TaskTable = c.getTaskSlice()
 	c.Table = c.getTasksTable()
 
 	tasksContainer := container.NewBorder(
@@ -27,25 +28,24 @@ func (c *config) tasks() *fyne.Container {
 }
 
 func (c *config) getTasksTable() *widget.Table {
-	data := c.getTaskSlice()
-	c.TaskTable = data
-
 	t := widget.NewTable(
 		func() (int, int) {
-			return len(data), len(data[0])
+			return len(c.TaskTable), len(c.TaskTable[0])
 		},
 		func() fyne.CanvasObject {
 			return container.NewVBox(widget.NewLabel(""))
 		},
 		func(i widget.TableCellID, o fyne.CanvasObject) {
-			if i.Col == len(data[0])-1 && i.Row != 0 {
+			if i.Col == len(c.TaskTable[0])-1 && i.Row != 0 {
 				// last cell in row, put a button
 				w := widget.NewButtonWithIcon("Delete", theme.DeleteIcon(), func() {
-					dialog.ShowConfirm("Delete?", "Cancel", func(deleted bool) {
-						id, _ := strconv.Atoi(data[i.Row][0].(string))
-						err := c.DB.DeleteTask(int64(id))
-						if err != nil {
-							log.Println(err)
+					dialog.ShowConfirm("Delete?", "", func(deleted bool) {
+						if deleted {
+							id, _ := strconv.Atoi(c.TaskTable[i.Row][0].(string))
+							err := c.DB.DeleteTask(int64(id))
+							if err != nil {
+								log.Println(err)
+							}
 						}
 
 						// refresh the tasks table
@@ -58,13 +58,13 @@ func (c *config) getTasksTable() *widget.Table {
 			} else {
 				// we are putting textual information
 				o.(*fyne.Container).Objects = []fyne.CanvasObject{
-					widget.NewLabel(data[i.Row][i.Col].(string)),
+					widget.NewLabel(c.TaskTable[i.Row][i.Col].(string)),
 				}
 			}
 		},
 	)
 
-	colwidth := []float32{50, 400, 110}
+	colwidth := []float32{50, 215, 110}
 	for i := 0; i < len(colwidth); i++ {
 		t.SetColumnWidth(i, colwidth[i])
 	}

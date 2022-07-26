@@ -22,7 +22,7 @@ func (c *config) completeButton() func() {
 	return func() {
 		var TempData []Item
 
-		for _, i := range c.Tasks {
+		for _, i := range c.TasksOnJSON {
 			if c.TaskLabel.Text == i.Task {
 
 				item := Item{
@@ -39,7 +39,7 @@ func (c *config) completeButton() func() {
 			}
 		}
 
-		c.Tasks = TempData
+		c.TasksOnJSON = TempData
 		c.Store(TASKS_FILE)
 
 		c.TaskEntry.Text = ""
@@ -52,13 +52,13 @@ func (c *config) deleteButton() func() {
 	return func() {
 		var TempData []Item
 
-		for _, i := range c.Tasks {
+		for _, i := range c.TasksOnJSON {
 			if c.TaskLabel.Text != i.Task {
 				TempData = append(TempData, i)
 			}
 		}
 
-		c.Tasks = TempData
+		c.TasksOnJSON = TempData
 		c.Store(TASKS_FILE)
 		c.refreshPendings()
 	}

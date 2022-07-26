@@ -13,15 +13,15 @@ import (
 )
 
 func (c *config) tasks() *fyne.Container {
-	c.TaskTable = c.getTaskSlice()
-	c.Table = c.getTasksTable()
+	c.Tasks = c.getTaskSlice()
+	c.TasksTable = c.getTasksTable()
 
 	tasksContainer := container.NewBorder(
 		nil,
 		nil,
 		nil,
 		nil,
-		container.NewAdaptiveGrid(1, c.getTasksTable()),
+		container.NewAdaptiveGrid(1, c.TasksTable),
 	)
 
 	return tasksContainer
@@ -30,18 +30,18 @@ func (c *config) tasks() *fyne.Container {
 func (c *config) getTasksTable() *widget.Table {
 	t := widget.NewTable(
 		func() (int, int) {
-			return len(c.TaskTable), len(c.TaskTable[0])
+			return len(c.Tasks), len(c.Tasks[0])
 		},
 		func() fyne.CanvasObject {
 			return container.NewVBox(widget.NewLabel(""))
 		},
 		func(i widget.TableCellID, o fyne.CanvasObject) {
-			if i.Col == len(c.TaskTable[0])-1 && i.Row != 0 {
+			if i.Col == len(c.Tasks[0])-1 && i.Row != 0 {
 				// last cell in row, put a button
 				w := widget.NewButtonWithIcon("Delete", theme.DeleteIcon(), func() {
 					dialog.ShowConfirm("Delete?", "", func(deleted bool) {
 						if deleted {
-							id, _ := strconv.Atoi(c.TaskTable[i.Row][0].(string))
+							id, _ := strconv.Atoi(c.Tasks[i.Row][0].(string))
 							err := c.DB.DeleteTask(int64(id))
 							if err != nil {
 								log.Println(err)
@@ -58,7 +58,7 @@ func (c *config) getTasksTable() *widget.Table {
 			} else {
 				// we are putting textual information
 				o.(*fyne.Container).Objects = []fyne.CanvasObject{
-					widget.NewLabel(c.TaskTable[i.Row][i.Col].(string)),
+					widget.NewLabel(c.Tasks[i.Row][i.Col].(string)),
 				}
 			}
 		},
@@ -105,6 +105,6 @@ func (c *config) currentTasks() ([]repository.Task, error) {
 }
 
 func (c *config) refreshTaskTable() {
-	c.TaskTable = c.getTaskSlice()
-	c.Table.Refresh()
+	c.Tasks = c.getTaskSlice()
+	c.TasksTable.Refresh()
 }

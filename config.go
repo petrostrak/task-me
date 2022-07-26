@@ -9,9 +9,9 @@ import (
 
 type config struct {
 	App              fyne.App
-	Tasks            []Item
-	TaskTable        [][]any
-	Table            *widget.Table
+	TasksOnJSON      []Item
+	Tasks            [][]any
+	TasksTable       *widget.Table
 	MainWindow       fyne.Window
 	Counter          int
 	Pendings         binding.String
@@ -50,12 +50,12 @@ func (c *config) makeUI() (add, complete, delete *widget.Button, pending *widget
 	pending.Alignment = fyne.TextAlignCenter
 
 	list = widget.NewList(
-		func() int { return len(c.Tasks) },
+		func() int { return len(c.TasksOnJSON) },
 
 		func() fyne.CanvasObject { return widget.NewLabel("") },
 
 		func(i widget.ListItemID, o fyne.CanvasObject) {
-			o.(*widget.Label).SetText(c.Tasks[i].Task)
+			o.(*widget.Label).SetText(c.TasksOnJSON[i].Task)
 		},
 	)
 
@@ -65,12 +65,12 @@ func (c *config) makeUI() (add, complete, delete *widget.Button, pending *widget
 }
 
 func (c *config) onSelect(id widget.ListItemID) {
-	c.TaskLabel.Text = c.Tasks[id].Task
+	c.TaskLabel.Text = c.TasksOnJSON[id].Task
 	c.TaskLabel.Refresh()
-	if c.Tasks[id].Done {
+	if c.TasksOnJSON[id].Done {
 		c.CompletedLabel.Text = "Done!"
 		c.CompletedLabel.Refresh()
-		c.CompletedAtLabel.Text = c.Tasks[id].CompletedAt
+		c.CompletedAtLabel.Text = c.TasksOnJSON[id].CompletedAt
 		c.CompletedAtLabel.Refresh()
 	} else {
 		c.CompletedLabel.Text = "Not done yet"
@@ -78,8 +78,8 @@ func (c *config) onSelect(id widget.ListItemID) {
 		c.CompletedAtLabel.Text = "Pending..."
 		c.CompletedAtLabel.Refresh()
 	}
-	c.CreatedAtLabel.Text = c.Tasks[id].CreatedAt
+	c.CreatedAtLabel.Text = c.TasksOnJSON[id].CreatedAt
 	c.CreatedAtLabel.Refresh()
-	c.DescriptionLabel.Text = c.Tasks[id].Description
+	c.DescriptionLabel.Text = c.TasksOnJSON[id].Description
 	c.DescriptionLabel.Refresh()
 }

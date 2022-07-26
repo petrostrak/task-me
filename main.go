@@ -18,11 +18,10 @@ const (
 
 func main() {
 	a := app.NewWithID("app.petrostrak.taskMe.preferences")
-	win := a.NewWindow("taskMe!")
 
 	c := config{
 		App:              a,
-		Tasks:            make([]Item, 0),
+		TasksOnJSON:      make([]Item, 0),
 		Counter:          0,
 		Pendings:         binding.NewString(),
 		TaskEntry:        widget.NewEntry(),
@@ -34,6 +33,7 @@ func main() {
 			CreatedAtLabel:   widget.NewLabel("Created at"),
 			CompletedAtLabel: widget.NewLabel("Completed at"),
 		},
+		MainWindow: a.NewWindow("taskMe!"),
 	}
 	c.TaskLabels.TaskLabel.TextStyle = fyne.TextStyle{Bold: true}
 	c.TaskEntry.SetPlaceHolder("Add a new task here")
@@ -49,7 +49,7 @@ func main() {
 	c.setupDB(db)
 
 	if err := c.Load(TASKS_FILE); err != nil {
-		dialog.ShowError(err, win)
+		dialog.ShowError(err, c.MainWindow)
 		os.Exit(1)
 	}
 	c.refreshPendings()
@@ -63,10 +63,10 @@ func main() {
 	table := c.tasks()
 
 	// main menu
-	c.createMenuItems(win)
+	c.createMenuItems(c.MainWindow)
 
 	// Display content
-	win.SetContent(container.NewHSplit(
+	c.MainWindow.SetContent(container.NewHSplit(
 		table,
 		container.NewVBox(
 			text, c.TaskLabel, c.DescriptionLabel,
@@ -76,7 +76,7 @@ func main() {
 		),
 	))
 
-	win.Resize(fyne.NewSize(770, 410))
-	win.CenterOnScreen()
-	win.ShowAndRun()
+	c.MainWindow.Resize(fyne.NewSize(770, 410))
+	c.MainWindow.CenterOnScreen()
+	c.MainWindow.ShowAndRun()
 }

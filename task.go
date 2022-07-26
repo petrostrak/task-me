@@ -24,11 +24,11 @@ func (c *config) Add(task, desc string) {
 		CompletedAt: time.Time{}.Format("Mon 2 Jan 2006 15:04"),
 	}
 
-	c.Tasks = append(c.Tasks, item)
+	c.TasksOnJSON = append(c.TasksOnJSON, item)
 }
 
 func (c *config) Store(filename string) error {
-	data, err := json.MarshalIndent(c.Tasks, "", "\t")
+	data, err := json.MarshalIndent(c.TasksOnJSON, "", "\t")
 	if err != nil {
 		return err
 	}
@@ -49,7 +49,7 @@ func (c *config) Load(filename string) error {
 		return errors.New("file is empty")
 	}
 
-	if err = json.Unmarshal(file, &c.Tasks); err != nil {
+	if err = json.Unmarshal(file, &c.TasksOnJSON); err != nil {
 		return err
 	}
 
@@ -59,7 +59,7 @@ func (c *config) Load(filename string) error {
 func (c *config) CountPending() int {
 	total := 0
 
-	for _, item := range c.Tasks {
+	for _, item := range c.TasksOnJSON {
 		if !item.Done {
 			total++
 		}

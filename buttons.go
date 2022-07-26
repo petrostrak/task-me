@@ -2,20 +2,56 @@ package main
 
 import (
 	"fmt"
+	"log"
 	"time"
+
+	"fyne.io/fyne/v2"
+	"fyne.io/fyne/v2/dialog"
+	"fyne.io/fyne/v2/widget"
+	"github.com/petrostrak/task-me/repository"
 )
 
-func (c *config) addButton() func() {
-	return func() {
-		c.Add(c.TaskEntry.Text, c.DescriptionEntry.Text)
-		c.Store(TASKS_FILE)
+func (c *config) addTaskDialog() dialog.Dialog {
+	addLableEntry := widget.NewEntry()
+	addDescriptionEntry := widget.NewEntry()
 
-		c.TaskEntry.Text = ""
-		c.TaskEntry.Refresh()
-		c.DescriptionEntry.Text = ""
-		c.DescriptionEntry.Refresh()
-		c.refreshPendings()
-	}
+	c.AddTasksLableEntry = addLableEntry
+	c.AddTasksDescriptionEntry = addDescriptionEntry
+
+	// create a dialog
+	addForm := dialog.NewForm(
+		"Add Task",
+		"Add",
+		"Cancel",
+		[]*widget.FormItem{
+			{Text: "Title of task", Widget: addLableEntry},
+			{Text: "Description", Widget: addDescriptionEntry},
+		},
+		func(valid bool) {
+			if valid {
+				title := addLableEntry.Text
+				description := addDescriptionEntry.Text
+
+				_, err := c.DB.InsertTask(repository.Task{
+					Title:       title,
+					Description: description,
+					Done:        false,
+					CreatedAt:   time.Now(),
+					CompletedAt: time.Time{},
+				})
+				if err != nil {
+					log.Println(err)
+				}
+
+				c.refreshTaskTable()
+			}
+		}, c.MainWindow)
+
+	// size and show the dialog
+	addForm.Resize(fyne.Size{Width: 400})
+	addForm.Show()
+
+	return addForm
 }
 
 func (c *config) completeButton() func() {
@@ -42,8 +78,6 @@ func (c *config) completeButton() func() {
 		c.TasksOnJSON = TempData
 		c.Store(TASKS_FILE)
 
-		c.TaskEntry.Text = ""
-		c.TaskEntry.Refresh()
 		c.refreshPendings()
 	}
 }

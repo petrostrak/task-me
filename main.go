@@ -20,12 +20,10 @@ func main() {
 	a := app.NewWithID("app.petrostrak.taskMe.preferences")
 
 	c := config{
-		App:              a,
-		TasksOnJSON:      make([]Item, 0),
-		Counter:          0,
-		Pendings:         binding.NewString(),
-		TaskEntry:        widget.NewEntry(),
-		DescriptionEntry: widget.NewEntry(),
+		App:         a,
+		TasksOnJSON: make([]Item, 0),
+		Counter:     0,
+		Pendings:    binding.NewString(),
 		TaskLabels: TaskLabels{
 			TaskLabel:        widget.NewLabel("Task"),
 			DescriptionLabel: widget.NewLabel("Description"),
@@ -36,8 +34,6 @@ func main() {
 		MainWindow: a.NewWindow("taskMe!"),
 	}
 	c.TaskLabels.TaskLabel.TextStyle = fyne.TextStyle{Bold: true}
-	c.TaskEntry.SetPlaceHolder("Add a new task here")
-	c.DescriptionEntry.SetPlaceHolder("Add description here")
 
 	// open connection to DB
 	db, err := c.connectSQL()
@@ -71,7 +67,7 @@ func main() {
 		container.NewVBox(
 			text, c.TaskLabel, c.DescriptionLabel,
 			c.CompletedLabel, c.CreatedAtLabel, c.CompletedAtLabel,
-			c.TaskEntry, c.DescriptionEntry, add, complete,
+			add, complete,
 			pending,
 		),
 	))

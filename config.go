@@ -8,16 +8,16 @@ import (
 )
 
 type config struct {
-	App              fyne.App
-	TasksOnJSON      []Item
-	Tasks            [][]any
-	TasksTable       *widget.Table
-	MainWindow       fyne.Window
-	Counter          int
-	Pendings         binding.String
-	TaskEntry        *widget.Entry
-	DescriptionEntry *widget.Entry
-	DB               repository.Repository
+	App                      fyne.App
+	TasksOnJSON              []Item
+	Tasks                    [][]any
+	TasksTable               *widget.Table
+	MainWindow               fyne.Window
+	Counter                  int
+	Pendings                 binding.String
+	DB                       repository.Repository
+	AddTasksLableEntry       *widget.Entry
+	AddTasksDescriptionEntry *widget.Entry
 	TaskLabels
 }
 
@@ -40,7 +40,9 @@ func (c *config) createMenuItems(win fyne.Window) {
 }
 
 func (c *config) makeUI() (add, complete *widget.Button, pending *widget.Label, list *widget.List) {
-	add = widget.NewButton("Add a Task", c.addButton())
+	add = widget.NewButton("Add a Task", func() {
+		c.addTaskDialog()
+	})
 
 	complete = widget.NewButton("Complete a Task", c.completeButton())
 

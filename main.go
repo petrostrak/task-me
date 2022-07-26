@@ -58,7 +58,7 @@ func main() {
 	text := c.WelcomeMessage()
 
 	// Define the add button
-	add, complete, delete, pending, _ := c.makeUI()
+	add, complete, pending, _ := c.makeUI()
 
 	table := c.tasks()
 
@@ -71,7 +71,7 @@ func main() {
 		container.NewVBox(
 			text, c.TaskLabel, c.DescriptionLabel,
 			c.CompletedLabel, c.CreatedAtLabel, c.CompletedAtLabel,
-			c.TaskEntry, c.DescriptionEntry, add, complete, delete,
+			c.TaskEntry, c.DescriptionEntry, add, complete,
 			pending,
 		),
 	))

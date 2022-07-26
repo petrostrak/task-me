@@ -39,12 +39,10 @@ func (c *config) createMenuItems(win fyne.Window) {
 	win.SetMainMenu(menu)
 }
 
-func (c *config) makeUI() (add, complete, delete *widget.Button, pending *widget.Label, list *widget.List) {
+func (c *config) makeUI() (add, complete *widget.Button, pending *widget.Label, list *widget.List) {
 	add = widget.NewButton("Add a Task", c.addButton())
 
 	complete = widget.NewButton("Complete a Task", c.completeButton())
-
-	delete = widget.NewButton("Delete a Task", c.deleteButton())
 
 	pending = widget.NewLabelWithData(c.Pendings)
 	pending.Alignment = fyne.TextAlignCenter

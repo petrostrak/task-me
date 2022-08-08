@@ -9,7 +9,6 @@ import (
 	"fyne.io/fyne/v2/container"
 	"fyne.io/fyne/v2/data/binding"
 	"fyne.io/fyne/v2/dialog"
-	"fyne.io/fyne/v2/widget"
 )
 
 const (
@@ -24,16 +23,8 @@ func main() {
 		TasksOnJSON: make([]Item, 0),
 		Counter:     0,
 		Pendings:    binding.NewString(),
-		TaskLabels: TaskLabels{
-			TaskLabel:        widget.NewLabel("Task"),
-			DescriptionLabel: widget.NewLabel("Description"),
-			CompletedLabel:   widget.NewLabel("Done?"),
-			CreatedAtLabel:   widget.NewLabel("Created at"),
-			CompletedAtLabel: widget.NewLabel("Completed at"),
-		},
-		MainWindow: a.NewWindow("taskMe!"),
+		MainWindow:  a.NewWindow("taskMe!"),
 	}
-	c.TaskLabels.TaskLabel.TextStyle = fyne.TextStyle{Bold: true}
 
 	// open connection to DB
 	db, err := c.connectSQL()
@@ -51,10 +42,10 @@ func main() {
 	c.refreshPendings()
 
 	// Define a welcome text centered
-	text := c.WelcomeMessage()
+	// text := c.WelcomeMessage()
 
 	// Define the add button
-	add, complete, pending, _ := c.makeUI()
+	add, pending := c.makeUI()
 
 	table := c.tasks()
 
@@ -62,17 +53,12 @@ func main() {
 	c.createMenuItems(c.MainWindow)
 
 	// Display content
-	c.MainWindow.SetContent(container.NewGridWithColumns(2,
+	c.MainWindow.SetContent(container.NewGridWithRows(2,
 		table,
-		container.NewVBox(
-			text, c.TaskLabel, c.DescriptionLabel,
-			c.CompletedLabel, c.CreatedAtLabel, c.CompletedAtLabel,
-			add, complete,
-			pending,
-		),
+		container.NewVBox(add, pending),
 	))
 
-	c.MainWindow.Resize(fyne.NewSize(770, 410))
+	c.MainWindow.Resize(fyne.NewSize(930, 410))
 	c.MainWindow.CenterOnScreen()
 	c.MainWindow.ShowAndRun()
 }

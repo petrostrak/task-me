@@ -18,15 +18,6 @@ type config struct {
 	DB                       repository.Repository
 	AddTasksLableEntry       *widget.Entry
 	AddTasksDescriptionEntry *widget.Entry
-	TaskLabels
-}
-
-type TaskLabels struct {
-	TaskLabel        *widget.Label
-	DescriptionLabel *widget.Label
-	CompletedLabel   *widget.Label
-	CreatedAtLabel   *widget.Label
-	CompletedAtLabel *widget.Label
 }
 
 func (c *config) createMenuItems(win fyne.Window) {
@@ -39,47 +30,13 @@ func (c *config) createMenuItems(win fyne.Window) {
 	win.SetMainMenu(menu)
 }
 
-func (c *config) makeUI() (add, complete *widget.Button, pending *widget.Label, list *widget.List) {
+func (c *config) makeUI() (add *widget.Button, pending *widget.Label) {
 	add = widget.NewButton("Add a Task", func() {
 		c.addTaskDialog()
 	})
 
-	complete = widget.NewButton("Complete a Task", c.completeButton())
-
 	pending = widget.NewLabelWithData(c.Pendings)
 	pending.Alignment = fyne.TextAlignCenter
 
-	list = widget.NewList(
-		func() int { return len(c.TasksOnJSON) },
-
-		func() fyne.CanvasObject { return widget.NewLabel("") },
-
-		func(i widget.ListItemID, o fyne.CanvasObject) {
-			o.(*widget.Label).SetText(c.TasksOnJSON[i].Task)
-		},
-	)
-
-	list.OnSelected = c.onSelect
-
 	return
-}
-
-func (c *config) onSelect(id widget.ListItemID) {
-	c.TaskLabel.Text = c.TasksOnJSON[id].Task
-	c.TaskLabel.Refresh()
-	if c.TasksOnJSON[id].Done {
-		c.CompletedLabel.Text = "Done!"
-		c.CompletedLabel.Refresh()
-		c.CompletedAtLabel.Text = c.TasksOnJSON[id].CompletedAt
-		c.CompletedAtLabel.Refresh()
-	} else {
-		c.CompletedLabel.Text = "Not done yet"
-		c.CompletedLabel.Refresh()
-		c.CompletedAtLabel.Text = "Pending..."
-		c.CompletedAtLabel.Refresh()
-	}
-	c.CreatedAtLabel.Text = c.TasksOnJSON[id].CreatedAt
-	c.CreatedAtLabel.Refresh()
-	c.DescriptionLabel.Text = c.TasksOnJSON[id].Description
-	c.DescriptionLabel.Refresh()
 }

@@ -17,6 +17,7 @@ type config struct {
 	DB                       repository.Repository
 	AddTasksLableEntry       *widget.Entry
 	AddTasksDescriptionEntry *widget.Entry
+	UpdateDoneEntry          *widget.Select
 }
 
 func (c *config) createMenuItems(win fyne.Window) {
@@ -33,6 +34,10 @@ func (c *config) makeUI() (add *widget.Button, pending *widget.Label, table *fyn
 	add = widget.NewButton("Add a Task", func() {
 		c.addTaskDialog()
 	})
+
+	// update = widget.NewButton("Update a Task", func() {
+	// 	c.updateTaskDialog()
+	// })
 
 	pending = widget.NewLabelWithData(c.Pendings)
 	pending.Alignment = fyne.TextAlignCenter

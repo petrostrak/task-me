@@ -49,7 +49,7 @@ func main() {
 		container.NewVBox(add, pending),
 	))
 
-	c.MainWindow.Resize(fyne.NewSize(930, 410))
+	c.MainWindow.Resize(fyne.NewSize(1040, 410))
 	c.MainWindow.CenterOnScreen()
 	c.MainWindow.ShowAndRun()
 }

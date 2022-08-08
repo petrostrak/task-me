@@ -57,6 +57,16 @@ func (c *config) getTasksTable() *widget.Table {
 				w.Importance = widget.HighImportance
 
 				o.(*fyne.Container).Objects = []fyne.CanvasObject{w}
+			} else if i.Col == len(c.Tasks[0])-2 && i.Row != 0 {
+				w := widget.NewButtonWithIcon("Update", theme.ConfirmIcon(), func() {
+					id, _ := strconv.Atoi(c.Tasks[i.Row][0].(string))
+					c.updateTaskDialog(id)
+					// refresh the tasks table
+					c.refreshTaskTable()
+				})
+				w.Importance = widget.MediumImportance
+
+				o.(*fyne.Container).Objects = []fyne.CanvasObject{w}
 			} else {
 				// we are putting textual information
 				o.(*fyne.Container).Objects = []fyne.CanvasObject{
@@ -66,7 +76,7 @@ func (c *config) getTasksTable() *widget.Table {
 		},
 	)
 
-	colwidth := []float32{50, 215, 300, 60, 180, 110}
+	colwidth := []float32{50, 215, 300, 60, 180, 110, 110}
 	for i := 0; i < len(colwidth); i++ {
 		t.SetColumnWidth(i, colwidth[i])
 	}
@@ -82,7 +92,7 @@ func (c *config) getTaskSlice() [][]any {
 		log.Println(err)
 	}
 
-	slice = append(slice, []any{"ID", "Title", "Description", "Done?", "Created at", "Delete"})
+	slice = append(slice, []any{"ID", "Title", "Description", "Done?", "Created at", "Update", "Delete"})
 
 	for _, x := range tasks {
 		var currentRow []any
@@ -92,6 +102,7 @@ func (c *config) getTaskSlice() [][]any {
 		currentRow = append(currentRow, x.Description)
 		currentRow = append(currentRow, strconv.FormatBool(x.Done))
 		currentRow = append(currentRow, x.CreatedAt.Format("Mon 2 Jan 2006 15:04"))
+		currentRow = append(currentRow, widget.NewButton("Update", func() {}))
 		currentRow = append(currentRow, widget.NewButton("Delete", func() {}))
 
 		slice = append(slice, currentRow)

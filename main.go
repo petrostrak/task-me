@@ -38,9 +38,7 @@ func main() {
 	// text := c.WelcomeMessage()
 
 	// Define the add button
-	add, pending := c.makeUI()
-
-	table := c.tasks()
+	add, pending, table := c.makeUI()
 
 	// main menu
 	c.createMenuItems(c.MainWindow)

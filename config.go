@@ -29,13 +29,15 @@ func (c *config) createMenuItems(win fyne.Window) {
 	win.SetMainMenu(menu)
 }
 
-func (c *config) makeUI() (add *widget.Button, pending *widget.Label) {
+func (c *config) makeUI() (add *widget.Button, pending *widget.Label, table *fyne.Container) {
 	add = widget.NewButton("Add a Task", func() {
 		c.addTaskDialog()
 	})
 
 	pending = widget.NewLabelWithData(c.Pendings)
 	pending.Alignment = fyne.TextAlignCenter
+
+	table = c.tasks()
 
 	return
 }

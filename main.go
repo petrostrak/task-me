@@ -62,7 +62,7 @@ func main() {
 	c.createMenuItems(c.MainWindow)
 
 	// Display content
-	c.MainWindow.SetContent(container.NewHSplit(
+	c.MainWindow.SetContent(container.NewGridWithColumns(2,
 		table,
 		container.NewVBox(
 			text, c.TaskLabel, c.DescriptionLabel,

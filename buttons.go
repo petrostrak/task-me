@@ -44,6 +44,7 @@ func (c *config) addTaskDialog() dialog.Dialog {
 				}
 
 				c.refreshTaskTable()
+				c.refreshPendings()
 			}
 		}, c.MainWindow)
 

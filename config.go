@@ -9,7 +9,6 @@ import (
 
 type config struct {
 	App                      fyne.App
-	TasksOnJSON              []Item
 	Tasks                    [][]any
 	TasksTable               *widget.Table
 	MainWindow               fyne.Window

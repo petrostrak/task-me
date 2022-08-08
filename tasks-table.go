@@ -50,6 +50,8 @@ func (c *config) getTasksTable() *widget.Table {
 
 						// refresh the tasks table
 						c.refreshTaskTable()
+						// refresh pendings
+						c.refreshPendings()
 					}, c.MainWindow)
 				})
 				w.Importance = widget.HighImportance

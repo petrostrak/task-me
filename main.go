@@ -2,13 +2,11 @@ package main
 
 import (
 	"log"
-	"os"
 
 	"fyne.io/fyne/v2"
 	"fyne.io/fyne/v2/app"
 	"fyne.io/fyne/v2/container"
 	"fyne.io/fyne/v2/data/binding"
-	"fyne.io/fyne/v2/dialog"
 )
 
 const (
@@ -19,11 +17,10 @@ func main() {
 	a := app.NewWithID("app.petrostrak.taskMe.preferences")
 
 	c := config{
-		App:         a,
-		TasksOnJSON: make([]Item, 0),
-		Counter:     0,
-		Pendings:    binding.NewString(),
-		MainWindow:  a.NewWindow("taskMe!"),
+		App:        a,
+		Counter:    0,
+		Pendings:   binding.NewString(),
+		MainWindow: a.NewWindow("taskMe!"),
 	}
 
 	// open connection to DB
@@ -35,10 +32,6 @@ func main() {
 	// create a DB repository
 	c.setupDB(db)
 
-	if err := c.Load(TASKS_FILE); err != nil {
-		dialog.ShowError(err, c.MainWindow)
-		os.Exit(1)
-	}
 	c.refreshPendings()
 
 	// Define a welcome text centered

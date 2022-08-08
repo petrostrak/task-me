@@ -3,6 +3,7 @@ package main
 import (
 	"log"
 	"strconv"
+	"time"
 
 	"fyne.io/fyne/v2"
 	"fyne.io/fyne/v2/container"
@@ -60,7 +61,19 @@ func (c *config) getTasksTable() *widget.Table {
 			} else if i.Col == len(c.Tasks[0])-2 && i.Row != 0 {
 				w := widget.NewButtonWithIcon("Update", theme.ConfirmIcon(), func() {
 					id, _ := strconv.Atoi(c.Tasks[i.Row][0].(string))
-					c.updateTaskDialog(id)
+					title := c.Tasks[i.Row][1].(string)
+					desc := c.Tasks[i.Row][2].(string)
+					done, _ := strconv.ParseBool(c.Tasks[i.Row][3].(string))
+					created_at, _ := time.Parse("Mon 2 Jan 2006 15:04", c.Tasks[i.Row][4].(string))
+
+					t := repository.Task{
+						ID:          int64(id),
+						Title:       title,
+						Description: desc,
+						Done:        done,
+						CreatedAt:   created_at,
+					}
+					c.updateTaskDialog(t)
 					// refresh the tasks table
 					c.refreshTaskTable()
 				})

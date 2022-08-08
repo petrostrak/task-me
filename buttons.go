@@ -55,10 +55,13 @@ func (c *config) addTaskDialog() dialog.Dialog {
 	return addForm
 }
 
-func (c *config) updateTaskDialog(id int) dialog.Dialog {
-	var done string
+func (c *config) updateTaskDialog(t repository.Task) dialog.Dialog {
 	updateLableEntry := widget.NewEntry()
+	updateLableEntry.PlaceHolder = t.Title
 	updateDescriptionEntry := widget.NewEntry()
+	updateDescriptionEntry.PlaceHolder = t.Description
+
+	var done string
 	updateDoneEntry := widget.NewSelect([]string{"Done", "Not yet done"}, func(s string) {
 		done = s
 	})
@@ -79,22 +82,26 @@ func (c *config) updateTaskDialog(id int) dialog.Dialog {
 		},
 		func(valid bool) {
 			if valid {
-				t, _ := c.DB.GetTaskByID(id)
 				title := updateLableEntry.Text
+				if title == "" {
+					title = t.Title
+				}
 				description := updateDescriptionEntry.Text
+				if description == "" {
+					description = t.Description
+				}
 				var isDone bool
 				if done == "Done" {
 					isDone = true
 				} else {
 					isDone = false
 				}
-
 				t.Title = title
 				t.Description = description
 				t.Done = isDone
 				t.CompletedAt = time.Now()
 
-				err := c.DB.UpdateTask(int64(id), *t)
+				err := c.DB.UpdateTask(int64(t.ID), t)
 				if err != nil {
 					log.Println(err)
 				}

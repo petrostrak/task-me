@@ -89,7 +89,7 @@ func (c *config) getTasksTable() *widget.Table {
 		},
 	)
 
-	colwidth := []float32{50, 215, 300, 60, 180, 110, 110}
+	colwidth := []float32{50, 170, 300, 105, 180, 110, 110}
 	for i := 0; i < len(colwidth); i++ {
 		t.SetColumnWidth(i, colwidth[i])
 	}
@@ -113,7 +113,7 @@ func (c *config) getTaskSlice() [][]any {
 		currentRow = append(currentRow, strconv.FormatInt(x.ID, 10))
 		currentRow = append(currentRow, x.Title)
 		currentRow = append(currentRow, x.Description)
-		currentRow = append(currentRow, strconv.FormatBool(x.Done))
+		currentRow = append(currentRow, c.convertBool(x.Done))
 		currentRow = append(currentRow, x.CreatedAt.Format("Mon 2 Jan 2006 15:04"))
 		currentRow = append(currentRow, widget.NewButton("Update", func() {}))
 		currentRow = append(currentRow, widget.NewButton("Delete", func() {}))

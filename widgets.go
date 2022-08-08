@@ -15,3 +15,11 @@ func (c *config) PendingTasks() *canvas.Text {
 
 	return text
 }
+
+func (c *config) convertBool(done bool) string {
+	if done {
+		return "Done"
+	} else {
+		return "Not yet done"
+	}
+}

@@ -59,7 +59,7 @@ func (c *config) getTasksTable() *widget.Table {
 
 				o.(*fyne.Container).Objects = []fyne.CanvasObject{w}
 			} else if i.Col == len(c.Tasks[0])-2 && i.Row != 0 {
-				w := widget.NewButtonWithIcon("Update", theme.ConfirmIcon(), func() {
+				w := widget.NewButtonWithIcon("Update", theme.ContentRedoIcon(), func() {
 					id, _ := strconv.Atoi(c.Tasks[i.Row][0].(string))
 					title := c.Tasks[i.Row][1].(string)
 					desc := c.Tasks[i.Row][2].(string)

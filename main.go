@@ -5,7 +5,6 @@ import (
 
 	"fyne.io/fyne/v2"
 	"fyne.io/fyne/v2/app"
-	"fyne.io/fyne/v2/container"
 	"fyne.io/fyne/v2/data/binding"
 )
 
@@ -34,22 +33,15 @@ func main() {
 
 	c.refreshPendings()
 
-	// Define a welcome text centered
-	// text := c.WelcomeMessage()
-
-	// Define the add button
-	add, pending, table := c.makeUI()
-
 	// main menu
 	c.createMenuItems(c.MainWindow)
 
-	// Display content
-	c.MainWindow.SetContent(container.NewGridWithRows(2,
-		table,
-		container.NewVBox(add, pending),
-	))
-
 	c.MainWindow.Resize(fyne.NewSize(1040, 410))
 	c.MainWindow.CenterOnScreen()
+	c.MainWindow.SetFixedSize(true)
+	c.MainWindow.SetMaster()
+
+	c.makeUI()
+
 	c.MainWindow.ShowAndRun()
 }

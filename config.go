@@ -2,7 +2,9 @@ package main
 
 import (
 	"fyne.io/fyne/v2"
+	"fyne.io/fyne/v2/container"
 	"fyne.io/fyne/v2/data/binding"
+	"fyne.io/fyne/v2/theme"
 	"fyne.io/fyne/v2/widget"
 	"github.com/petrostrak/task-me/repository"
 )
@@ -30,19 +32,27 @@ func (c *config) createMenuItems(win fyne.Window) {
 	win.SetMainMenu(menu)
 }
 
-func (c *config) makeUI() (add *widget.Button, pending *widget.Label, table *fyne.Container) {
-	add = widget.NewButton("Add a Task", func() {
-		c.addTaskDialog()
-	})
+func (c *config) makeUI() {
+	toolbar := widget.NewToolbar(
+		widget.NewToolbarSpacer(),
+		widget.NewToolbarAction(theme.DocumentCreateIcon(), func() {
+			c.addTaskDialog()
+		}),
+	)
 
-	// update = widget.NewButton("Update a Task", func() {
-	// 	c.updateTaskDialog()
-	// })
+	pending := widget.NewLabelWithData(c.Pendings)
+	pending.Alignment = fyne.TextAlignLeading
 
-	pending = widget.NewLabelWithData(c.Pendings)
-	pending.Alignment = fyne.TextAlignCenter
+	table := c.tasks()
 
-	table = c.tasks()
+	// get app tabs
+	tabs := container.NewAppTabs(
+		container.NewTabItemWithIcon("Tasks", theme.InfoIcon(), table),
+	)
+	tabs.SetTabLocation(container.TabLocationTop)
 
-	return
+	// add container to window
+	finalContent := container.NewVBox(container.NewGridWithColumns(2, pending, toolbar), tabs)
+
+	c.MainWindow.SetContent(finalContent)
 }

@@ -43,16 +43,18 @@ func (c *config) makeUI() {
 	pending := widget.NewLabelWithData(c.Pendings)
 	pending.Alignment = fyne.TextAlignLeading
 
+	panelContent := container.NewGridWithColumns(2, pending, toolbar)
+
 	table := c.tasks()
 
 	// get app tabs
-	tabs := container.NewAppTabs(
-		container.NewTabItemWithIcon("Tasks", theme.InfoIcon(), table),
-	)
-	tabs.SetTabLocation(container.TabLocationTop)
+	// tabs := container.NewAppTabs(
+	// 	container.NewTabItemWithIcon("Tasks", theme.InfoIcon(), table),
+	// )
+	// tabs.SetTabLocation(container.TabLocationTop)
 
 	// add container to window
-	finalContent := container.NewVBox(container.NewGridWithColumns(2, pending, toolbar), tabs)
+	finalContent := container.NewBorder(panelContent, nil, nil, nil, table)
 
 	c.MainWindow.SetContent(finalContent)
 }

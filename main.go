@@ -42,6 +42,5 @@ func main() {
 	c.MainWindow.SetMaster()
 
 	c.makeUI()
-
 	c.MainWindow.ShowAndRun()
 }

@@ -8,6 +8,9 @@ taskMe! is a simple simple todo Desktop app written in Go with [Fyne](https://de
 ##### An illustration of v2.0.0 / v3.0.0
 ![alt text](https://github.com/petrostrak/task-me/blob/main/taskMev2.png)
 
+##### An illustration of v4.0.0
+![alt text](https://github.com/petrostrak/task-me/blob/main/taskMev3.png)
+
 ##### To install taskMe! on debian:
 
 * Extract taskMe.tar.xz
